@@ -1,14 +1,31 @@
 from typing import Union
 from fastapi import FastAPI
 
+from model import Product
+from db import client
+from db import productDB
+
 app = FastAPI()
 
-#region
+
 @app.get("/")
 def read_root():
-    return {"Hello" : "World"}
+    return {"Hello": "World"}
 
-#@app.get("/items/{item_id}")
-#def read_item(item_id: int, q: Union[str, None] = None);
-#    return {"item_id": item_id, "q":q}
-#endregion
+
+@app.get("/product/")
+def getproduct():
+    return productDB.consulta()
+
+@app.get("/product/{id}")
+def consultaById(id):
+    return productDB.consultaById(id)
+
+@app.post("/product/")
+def createProduct(prod: Product.Product):
+    return productDB.insertProduct(prod.id,prod.name,prod.description,prod.company,prod.price,prod.unit,prod.subcategory_id)
+    
+@app.get("/product/{id}")
+def consultaById(id):
+    return productDB.consultaById(id)
+
