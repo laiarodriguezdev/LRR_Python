@@ -1,90 +1,96 @@
-from db import client
+from db import clientPS
 from schema import producte
 
-def consulta():
+def getAllProducts():
 
     try:
-        conn = client.db_client()
+        conn = clientPS.client()
 
         cur = conn.cursor()
 
-        cur.execute("select * from public.product")
+        cur.execute(f"select * from public.product")
+
+        data = cur.fetchall()
+
+        data = producte.product_schema(data)
+
+    except Exception as e:
+        return f'Error connexió: {e}'
+    
+    finally:
+        conn.close()
+        return f"[{data}]"
+
+def productByID(id:int):
+
+    try:
+        conn = clientPS.client()
+
+        cur = conn.cursor()
+
+        cur.execute(f"select * from public.product where product_id={id}")
 
         data = cur.fetchone()
 
         data = producte.product_schema(data)
 
     except Exception as e:
-        return f'Error conexión {e}'
+        return f'Error connexió: {e}'
     
     finally:
         conn.close()
-        return f"consulta de {data}"
-
-def consultaById(id:int):
-
-    try:
-        conn = client.db_client()
-
-        cur = conn.cursor()
-
-        cur.execute("select * from public.product")
-
-        data = cur.fetchone()
-
-        data = producte.product_schema(data)
-
-    except Exception as e:
-        return f'Error conexión {e}'
-    
-    finally:
-        conn.close()
-        return f"consulta de {data}"
-
-
+        return f"{data}"
 
 def insertProduct(id,name,desc,company,price,units,subCate):
     try:
-        conn = client.db_client()
+        conn = clientPS.client()
 
         cur = conn.cursor()
 
         cur.execute(f"INSERT INTO public.product(product_id, name, description, company, price, units, subcategory_id, created_at, updated_at) VALUES ({id}, '{name}', '{desc}', '{company}', '{price}', '{units}', '{subCate}', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);")
 
         conn.commit()
-           
-        # data = cur.fetchone()
-
-        # data = producte.product_schema(data)
-
+        
     except Exception as e:
-        return f'Error conexión {e}'
+        return f'Error connexió: {e}'
     
     finally:
         conn.close()
     
-    return f"Producto añadido"
+    return f"Producte afegit"
 
-
-
-def update():
+def deleteProductByID(id:int):
     try:
-        conn = client.db_client()
+        conn = clientPS.client()
 
         cur = conn.cursor()
 
-        cur.execute(f"INSERT INTO public.product(product_id, name, description, company, price, units, subcategory_id, created_at, updated_at) VALUES ({id}, '{name}', '{desc}', '{company}', '{price}', '{units}', '{subCate}', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);")
+        cur.execute(f"DELETE from public.product where product_id={id}")
 
         conn.commit()
-           
-        # data = cur.fetchone()
-
-        # data = producte.product_schema(data)
-
+        
     except Exception as e:
-        return f'Error conexión {e}'
+        return f'Error connexió: {e}'
     
     finally:
         conn.close()
     
-    return f"Producto añadido"
+    return f"Producte eliminat"
+
+def updateProductByID(id:int):
+    try:
+        conn = clientPS.client()
+
+        cur = conn.cursor()
+
+        cur.execute(f"UPDATE from public.product where product_id={id}")
+
+        conn.commit()
+        
+    except Exception as e:
+        return f'Error connexió: {e}'
+    
+    finally:
+        conn.close()
+    
+    return f"Producte modificat"
