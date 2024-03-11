@@ -77,20 +77,30 @@ def deleteProductByID(id:int):
     
     return f"Producte eliminat"
 
+# INTERNAL ERROR, NO SÉ PAS EN QUE M'EQUIVOCO. 
 def updateProductByID(id:int):
     try:
         conn = clientPS.client()
 
         cur = conn.cursor()
-
-        cur.execute(f"UPDATE from public.product where product_id={id}")
-
-        conn.commit()
         
+        cur.execute(f"""UPDATE public.product
+                        SET name='{name}', 
+                            description='{desc}', 
+                            company='{company}', 
+                            price={price}, 
+                            units={units}, 
+                            subcategory_id={subCate},
+                            updated_at=CURRENT_TIMESTAMP
+                        WHERE product_id={id}""")
+
+        
+        conn.commit()
+
     except Exception as e:
-        return f'Error connexió: {e}'
+        return f'Error conexión {e}'
     
     finally:
         conn.close()
     
-    return f"Producte modificat"
+    return f"Producto añadido"
