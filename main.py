@@ -1,7 +1,7 @@
 from typing import Union
 from fastapi import FastAPI
 
-from model.Product import Product
+from model import Product
 from db import clientPS
 from db import productDB
 
@@ -19,16 +19,16 @@ def productByID(id):
 
 # AFEGEIX EL PRODUCTE
 @app.post("/product/")
-def createProduct(prod: Product):
-    return productDB.insertProduct(prod.id,prod.name,prod.description,prod.company,prod.price,prod.unit,prod.subcategory_id)
+def createProduct(prod:Product.Product):
+    return productDB.insertProduct(prod)
 
 # ESBORRA EL PRODUCTE SEGONS ID
 @app.delete("/product/{id}")
 def deleteProductByID(id):
     return productDB.deleteProductByID(id);
 
-# ACTUALITZA EL PRODUCTE SEGONS ID  --------- NO FUNCIONA
+# ACTUALITZA EL PRODUCTE SEGONS ID
 @app.put("/product/{id}")
-def updateProductByID(id:int, prod:Product):
-    return productDB.updateProductByID(id, prod);
+def updateProductByID(prod:Product.Product):
+    return productDB.updateProductByID(prod);
 

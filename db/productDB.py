@@ -41,13 +41,13 @@ def productByID(id:int):
         conn.close()
         return f"{data}"
 
-def insertProduct(id,name,desc,company,price,units,subCate):
+def insertProduct(prod):
     try:
         conn = clientPS.client()
 
         cur = conn.cursor()
-
-        cur.execute(f"INSERT INTO public.product(product_id, name, description, company, price, units, subcategory_id, created_at, updated_at) VALUES ({id}, '{name}', '{desc}', '{company}', '{price}', '{units}', '{subCate}', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);")
+        
+        cur.execute(f"INSERT INTO public.product(product_id, name, description, company, price, units, subcategory_id, created_at, updated_at) VALUES ({prod.id}, '{prod.name}', '{prod.description}', '{prod.company}', '{prod.price}', '{prod.unit}', '{prod.subcategory_id}', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);")
 
         conn.commit()
         
@@ -77,22 +77,21 @@ def deleteProductByID(id:int):
     
     return f"Producte eliminat"
 
-# INTERNAL ERROR, NO SÉ PAS EN QUE M'EQUIVOCO. 
-def updateProductByID(id:int):
+def updateProductByID(prod):
     try:
         conn = clientPS.client()
 
         cur = conn.cursor()
         
         cur.execute(f"""UPDATE public.product
-                        SET name='{name}', 
-                            description='{desc}', 
-                            company='{company}', 
-                            price={price}, 
-                            units={units}, 
-                            subcategory_id={subCate},
+                        SET name='{prod.name}', 
+                            description='{prod.description}', 
+                            company='{prod.company}', 
+                            price={prod.price}, 
+                            units={prod.unit}, 
+                            subcategory_id={prod.subcategory_id},
                             updated_at=CURRENT_TIMESTAMP
-                        WHERE product_id={id}""")
+                        WHERE product_id={prod.id}""")
 
         
         conn.commit()
