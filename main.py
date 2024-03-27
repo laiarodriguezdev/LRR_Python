@@ -1,8 +1,6 @@
 from typing import Union
 from fastapi import FastAPI
-
 from model import Product
-from db import clientPS
 from db import productDB
 
 app = FastAPI()
