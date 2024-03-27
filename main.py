@@ -1,7 +1,8 @@
 from typing import Union
-from fastapi import FastAPI
+from fastapi import FastAPI, UploadFile
 from model import Product
 from db import productDB
+from db import productCSV
 
 app = FastAPI()
 
@@ -30,3 +31,11 @@ def deleteProductByID(id):
 def updateProductByID(prod:Product.Product):
     return productDB.updateProductByID(prod);
 
+@app.get("/productAll")
+def allProducts():
+    return productDB.allProducts()
+
+#A PARTIR D'AQUI JA ES PRODUCTCSV
+@app.post("/uploadfile/")
+async def postFile(file: UploadFile):
+    return productCSV.loadFile(file)
