@@ -4,7 +4,7 @@ from model import Product
 from db import productDB
 from db import productCSV
 
-app = FastAPI()
+app = FastAPI(title="Laia Rodríguez Ramos - CRUD AMB LOAD FILE")
 
 # AGAFA TOTS ELS PRODUCTES
 @app.get("/product/")
