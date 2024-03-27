@@ -36,8 +36,7 @@ def productByID(id:int):
         cur = conn.cursor()
         cur.execute(f"select * from public.product where product_id={id}")
         data = cur.fetchone()
-        result = transformJSON(data)
-        return result
+        return data
     except Exception as e:
         return f'Error connexió: {e}'
     finally:
