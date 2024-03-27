@@ -4,7 +4,7 @@ from model import Product
 from db import productDB
 from db import productCSV
 
-app = FastAPI(title="Laia Rodríguez Ramos - CRUD AMB LOAD FILE")
+app = FastAPI(title="Laia Rodríguez Ramos - CRUD AMB LOAD FILE ")
 
 # AGAFA TOTS ELS PRODUCTES
 @app.get("/product/")
@@ -31,6 +31,7 @@ def deleteProductByID(id):
 def updateProductByID(prod:Product.Product):
     return productDB.updateProductByID(prod);
 
+# AGAFA TOTS ELS PRODUCTES AMB LES FOREIGN KEYS.
 @app.get("/productAll")
 def allProducts():
     return productDB.allProducts()
